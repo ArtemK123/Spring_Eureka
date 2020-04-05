@@ -1,0 +1,19 @@
+mvn clean install - compile
+
+java -jar target/EurekaServer-0.0.1-SNAPSHOT.jar - run server
+java -jar target/EurekaClient-0.0.1-SNAPSHOT.jar - run client
+
+mvn dependency:resolve - download dependencies from pom.xml
+
+Or via spring mechanism:
+mvn spring-boot:run - start spring app
+
+
+***************************************
+
+
+Links:
+Eureka server: https://www.tutorialspoint.com/spring_boot/spring_boot_eureka_server.htm
+Eureka client: https://o7planning.org/ru/11737/understanding-spring-cloud-discovery-eureka-client-with-example
+Create spring project online: https://start.spring.io/
+Yaml validation (for application.yml): http://www.yamllint.com/
