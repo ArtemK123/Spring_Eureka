@@ -38,19 +38,23 @@ public class ProductController {
     @ResponseBody
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
     public Product getById(@PathVariable Integer id) throws SQLException {
-        return this.dao.getById(id);
+        return this.dao.get(id);
     }
 
     @ResponseBody
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public String add(@RequestBody Product product) throws SQLException {
-        Product createdProduct = this.dao.add(product);
-        return String.format("Added successfully. Id - %d", createdProduct.getId());
+        Integer createdProductId = this.dao.add(product);
+        return String.format("Added successfully. Id - %d", createdProductId);
     }
 
     @ResponseBody
     @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
     public String update(@PathVariable Integer id, @RequestBody Product product) throws SQLException {
+        Product stored = this.dao.get(id);
+        if (stored == null) {
+            return "Item is not found";
+        };
         this.dao.update(id, product);
         return "Updated successfully";
     }
@@ -58,6 +62,10 @@ public class ProductController {
     @ResponseBody
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
     public String delete(@PathVariable Integer id) throws SQLException {
+        Product stored = this.dao.get(id);
+        if (stored == null) {
+            return "Item is not found";
+        };
         this.dao.delete(id);
         return "Deleted sucessfully";
     }

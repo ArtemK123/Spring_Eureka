@@ -1,0 +1,32 @@
+### Create entity
+POST http://localhost:8000/products
+Content-type: application/json
+{
+	"name": "toDocker1",
+	"count": 22,
+	"price": "100.75",
+	"link": "/pretend/it/is/a/link",
+	"type": "default",
+	"manufacturer": "Vasya"
+}
+
+### Update entity
+PUT http://localhost:8000/products/{entityId}
+Content-type: application/json
+{
+	"name": "UpdatedProduct",
+	"count": 10,
+	"price": "1.5",
+	"link": "pff",
+	"type": "-",
+	"manufacturer": "-"
+}
+
+### Fetch entities
+GET http://localhost:8000/products
+
+### Fetch entity
+GET http://localhost:8000/products{entityId}
+
+### Delete entity
+DELETE http://localhost:8000/products/{entityId}

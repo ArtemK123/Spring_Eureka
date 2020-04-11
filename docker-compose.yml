@@ -11,13 +11,13 @@ services:
         networks:
             - eureka-network
     eureka-server:
-        image: eureka-server
+        image: darkmode1012/eureka:eureka-server
         ports:
             - 8761:8761
         networks:
             - eureka-network
     eureka-client:
-        image: eureka-client
+        image: darkmode1012/eureka:eureka-client
         depends_on:
             - db
             - eureka-server

@@ -27,7 +27,7 @@ public class ProductDaoImp implements ProductDao {
         tableCreator.create();
     }
 
-    public Product add(Product product) {
+    public Integer add(Product product) {
         product.setId(product.hashCode());
         
         String query = String.format(
@@ -44,7 +44,7 @@ public class ProductDaoImp implements ProductDao {
                 product.getManufacturer());
 
         jdbcTemplate.update(query);
-        return product;
+        return product.getId();
     }
 
     public List<Product> getAll() {
@@ -52,14 +52,25 @@ public class ProductDaoImp implements ProductDao {
         return jdbcTemplate.query(query, new ProductRowMapper());
     }
 
-    public Product getById(Integer id) {
+    public Product get(Integer id) {
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE id=?";
-        return this.jdbcTemplate.queryForObject(query, new Object[]{id}, new ProductRowMapper());
+        try {
+            return this.jdbcTemplate.queryForObject(query, new Object[]{id}, new ProductRowMapper());
+        }
+        catch(Exception exception) {
+            return null;
+        }
     }
 
     public Product getByName(String name) {
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE name=?";
-        return this.jdbcTemplate.queryForObject(query, new Object[]{name}, new ProductRowMapper());
+    
+        try {
+            return this.jdbcTemplate.queryForObject(query, new Object[]{name}, new ProductRowMapper());
+        }
+        catch(Exception exception) {
+            return null;
+        }
     }
 
     public void update(Integer id, Product updatedProduct) {
