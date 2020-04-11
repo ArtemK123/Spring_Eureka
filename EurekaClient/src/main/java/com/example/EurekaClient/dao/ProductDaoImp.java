@@ -2,21 +2,29 @@ package com.example.EurekaClient.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import com.example.EurekaClient.config.AppConfig;
+import com.example.EurekaClient.config.JdbcTemplateProvider;
 import com.example.EurekaClient.entities.Product;
 import com.example.EurekaClient.rowMappers.ProductRowMapper;
+import com.example.EurekaClient.tableCreators.ProductsTableCreator;
+import com.example.EurekaClient.tableCreators.TableCreator;
 
+@Component
 public class ProductDaoImp implements ProductDao {
-    @Autowired
     private JdbcTemplate jdbcTemplate;
+    private TableCreator tableCreator;
 
     private final String TABLE_NAME = "products"; 
 
-    public ProductDaoImp() {
-        jdbcTemplate = new AppConfig().jdbcTemplate();
+    @Autowired
+    public ProductDaoImp(JdbcTemplateProvider jdbcTemplateProvider) {
+        jdbcTemplate = jdbcTemplateProvider.get();
+        tableCreator = new ProductsTableCreator(jdbcTemplate);
+
+        tableCreator.create();
     }
 
     public Product add(Product product) {

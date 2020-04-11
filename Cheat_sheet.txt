@@ -9,6 +9,12 @@ Or via spring mechanism:
 mvn spring-boot:run - start spring app
 
 
+docker build -t eureka-server .
+docker build -t eureka-client .
+docker save --output eureka-server.tar eureka-server
+docker load --input eureka-server.tar
+docker run -p 8761:8761 eureka-server
+
 ***************************************
 
 
@@ -17,3 +23,4 @@ Eureka server: https://www.tutorialspoint.com/spring_boot/spring_boot_eureka_ser
 Eureka client: https://o7planning.org/ru/11737/understanding-spring-cloud-discovery-eureka-client-with-example
 Create spring project online: https://start.spring.io/
 Yaml validation (for application.yml): http://www.yamllint.com/
+Docker: https://medium.com/@wkrzywiec/how-to-put-your-java-application-into-docker-container-5e0a02acdd6b

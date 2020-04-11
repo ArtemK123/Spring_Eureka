@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+    db:
+        container_name: db
+        image: postgres:11
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_DB: Megabit
+            POSTGRES_USER: MegabitUser
+            POSTGRES_PASSWORD: Megabit
+            POSTGRES_ROOT_PASSWORD: Megabit
+        restart: always
+        networks:
+            - eureka-network
+    eureka-server:
+        image: eureka-server
+        ports:
+            - 8761:8761
+        restart: always
+        networks:
+            - eureka-network
+    eureka-client:
+        image: eureka-client
+        depends_on:
+            - db
+            - eureka-server
+        ports:
+            - 8000:8000
+        restart: always
+        networks:
+            - eureka-network
+
+networks: 
+  eureka-network:
+    driver: bridge
