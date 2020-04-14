@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
     private ProductDao dao;
 
+    private final String INVALID_PRODUCT_MESSAGE = "Product is not valid! " + 
+        "Please, specify all fields. Numeric field should be equal or bigger than 0";
+
+    private final String PRODUCT_NOT_FOUND_MESSAGE = "Item is not found";
+
     @Autowired
     public ProductController(ProductDao dao) {
         this.dao = dao;
@@ -44,6 +49,10 @@ public class ProductController {
     @ResponseBody
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public String add(@RequestBody Product product) throws SQLException {
+        if (!IsProductValid(product)) {
+            return INVALID_PRODUCT_MESSAGE;
+        }
+        
         Integer createdProductId = this.dao.add(product);
         return String.format("Added successfully. Id - %d", createdProductId);
     }
@@ -51,10 +60,15 @@ public class ProductController {
     @ResponseBody
     @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
     public String update(@PathVariable Integer id, @RequestBody Product product) throws SQLException {
+        if (!IsProductValid(product)) {
+            return INVALID_PRODUCT_MESSAGE;
+        }
+        
         Product stored = this.dao.get(id);
         if (stored == null) {
-            return "Item is not found";
-        };
+            return PRODUCT_NOT_FOUND_MESSAGE;
+        }
+
         this.dao.update(id, product);
         return "Updated successfully";
     }
@@ -64,9 +78,24 @@ public class ProductController {
     public String delete(@PathVariable Integer id) throws SQLException {
         Product stored = this.dao.get(id);
         if (stored == null) {
-            return "Item is not found";
-        };
+            return PRODUCT_NOT_FOUND_MESSAGE;
+        }
+
         this.dao.delete(id);
         return "Deleted sucessfully";
+    }
+
+    
+    private boolean IsProductValid(Product product) {
+        return !isNullOrEmpty(product.getName())
+            && product.getCount() != null && product.getCount() >= 0
+            && product.getPrice() != null && product.getPrice() >= 0.0
+            && !isNullOrEmpty(product.getLink())
+            && !isNullOrEmpty(product.getType())
+            && !isNullOrEmpty(product.getManufacturer());
+    }
+
+    private boolean isNullOrEmpty(String string) {
+        return string == null || string.trim().isEmpty();
     }
 }
