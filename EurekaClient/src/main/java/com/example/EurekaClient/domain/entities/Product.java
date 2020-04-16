@@ -1,4 +1,4 @@
-package com.example.EurekaClient.entities;
+package com.example.EurekaClient.domain.entities;
 
 public class Product {
     private Integer id;

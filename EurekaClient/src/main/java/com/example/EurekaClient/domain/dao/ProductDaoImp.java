@@ -1,4 +1,4 @@
-package com.example.EurekaClient.dao;
+package com.example.EurekaClient.domain.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -7,15 +7,14 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 import com.example.EurekaClient.config.JdbcTemplateProvider;
-import com.example.EurekaClient.entities.Product;
-import com.example.EurekaClient.rowMappers.ProductRowMapper;
-import com.example.EurekaClient.tableCreators.ProductsTableCreator;
-import com.example.EurekaClient.tableCreators.TableCreator;
+import com.example.EurekaClient.domain.entities.Product;
+import com.example.EurekaClient.domain.rowMappers.ProductRowMapper;
+import com.example.EurekaClient.domain.tableCreators.ProductsTableCreator;
 
 @Component
 public class ProductDaoImp implements ProductDao {
     private JdbcTemplate jdbcTemplate;
-    private TableCreator tableCreator;
+    private ProductsTableCreator tableCreator;
 
     private final String TABLE_NAME = "products"; 
 

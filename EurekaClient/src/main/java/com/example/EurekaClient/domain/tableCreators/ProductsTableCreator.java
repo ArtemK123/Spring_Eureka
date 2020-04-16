@@ -1,8 +1,8 @@
-package com.example.EurekaClient.tableCreators;
+package com.example.EurekaClient.domain.tableCreators;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
-public class ProductsTableCreator implements TableCreator {
+public class ProductsTableCreator {
 
     private JdbcTemplate jdbcTemplate;
 

@@ -1,4 +1,4 @@
-package com.example.EurekaClient.dao;
+package com.example.EurekaClient.domain.dao;
 
 import java.sql.SQLException;
 import java.util.List;

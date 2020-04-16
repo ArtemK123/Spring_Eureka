@@ -1,11 +1,11 @@
-package com.example.EurekaClient.rowMappers;
+package com.example.EurekaClient.domain.rowMappers;
 
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.example.EurekaClient.entities.Product;
+import com.example.EurekaClient.domain.entities.Product;
 
 public class ProductRowMapper implements RowMapper<Product> {
     public Product mapRow(ResultSet resultSet, int rowNum) throws SQLException {

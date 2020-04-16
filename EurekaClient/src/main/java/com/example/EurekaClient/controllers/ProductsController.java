@@ -3,8 +3,8 @@ package com.example.EurekaClient.controllers;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.example.EurekaClient.dao.ProductDao;
-import com.example.EurekaClient.entities.Product;
+import com.example.EurekaClient.domain.dao.ProductDao;
+import com.example.EurekaClient.domain.entities.Product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
  
 @RestController
-public class ProductController {
+public class ProductsController {
     private ProductDao dao;
 
     private final String INVALID_PRODUCT_MESSAGE = "Product is not valid! " + 
@@ -24,7 +24,7 @@ public class ProductController {
     private final String PRODUCT_NOT_FOUND_MESSAGE = "Item is not found";
 
     @Autowired
-    public ProductController(ProductDao dao) {
+    public ProductsController(ProductDao dao) {
         this.dao = dao;
     }
  
