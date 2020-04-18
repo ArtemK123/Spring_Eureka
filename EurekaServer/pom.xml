@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>EurekaServer</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>eureka-server</artifactId>
+	<version>1.0.0</version>
 	<name>EurekaServer</name>
 	<description>Instance of Eureka Server</description>
 
@@ -35,12 +35,6 @@
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.3.6</version>
 		</dependency>
 	</dependencies>
 

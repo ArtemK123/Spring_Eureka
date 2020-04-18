@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>EurekaClient</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>eureka-client</artifactId>
+	<version>1.0.0</version>
 	<name>EurekaClient</name>
 	<description>Example of Eureka Client</description>
 
@@ -51,6 +51,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>5.2.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>eureka-common</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
  

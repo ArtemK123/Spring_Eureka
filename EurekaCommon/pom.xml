@@ -3,14 +3,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.example</groupId>
-	<artifactId>Common</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Common</name>
+	<artifactId>eureka-common</artifactId>
+	<version>1.0.0</version>
+	<name>EurekaCommon</name>
 	<description>Common packages for Spring Eureka app</description>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>14</java.version>
-        <maven.compiler.release>14</maven.compiler.release>
 	</properties>
 
 	<dependencies>

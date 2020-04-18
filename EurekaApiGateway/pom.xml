@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>ApiGateway</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>ApiGateway</name>
+	<artifactId>eureka-api-gateway</artifactId>
+	<version>1.0.0</version>
+	<name>EurekaApiGateway</name>
 	<description>Api-gateway for Spring Eureka project</description>
 
 	<properties>
@@ -46,6 +46,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<dependency>
+            <groupId>com.example</groupId>
+            <artifactId>eureka-common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 	</dependencies>
 
 	<build>
