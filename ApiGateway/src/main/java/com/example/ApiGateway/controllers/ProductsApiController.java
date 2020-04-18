@@ -75,6 +75,7 @@ public class ProductsApiController {
         StringEntity input = new StringEntity(productJson);
         input.setContentType("application/json");
         postRequest.setEntity(input);
+        Product product = new Product();
 
         HttpResponse response = defaultHttpClient.execute(postRequest);
         return EntityUtils.toString(response.getEntity());
