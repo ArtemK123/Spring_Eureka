@@ -1,7 +1,7 @@
 mvn clean install - compile
 
-java -jar target/EurekaServer-0.0.1-SNAPSHOT.jar - run server
-java -jar target/EurekaClient-0.0.1-SNAPSHOT.jar - run client
+java -jar target/eureka-server-1.0.0.jar - run server
+java -jar target/eureka-client-1.0.0.jar - run client
 java -jar target/ApiGateway-0.0.1-SNAPSHOT.jar
 
 mvn dependency:resolve - download dependencies from pom.xml

@@ -2,6 +2,8 @@ package com.example.eureka_client.config;
 
 import javax.sql.DataSource;
 
+import com.example.eureka_common.providers.ApplicationPropertiesProvider;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;

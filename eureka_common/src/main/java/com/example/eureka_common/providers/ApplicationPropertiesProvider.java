@@ -1,4 +1,4 @@
-package com.example.eureka_client.config;
+package com.example.eureka_common.providers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;

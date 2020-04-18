@@ -1,8 +1,8 @@
-package com.example.eureka_api_gateway_gateway.controllers;
+package com.example.eureka_api_gateway.controllers;
 
 import java.io.IOException;
 
-import com.example.eureka_api_gateway.config.ApplicationPropertiesProvider;
+import com.example.eureka_common.providers.ApplicationPropertiesProvider;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
