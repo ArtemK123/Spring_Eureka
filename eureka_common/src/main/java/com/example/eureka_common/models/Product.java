@@ -1,4 +1,4 @@
-package com.example.eureka_client.domain.entities;
+package com.example.eureka_common.models;
 
 public class Product {
     private Integer id;

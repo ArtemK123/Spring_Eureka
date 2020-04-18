@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.example.eureka_client.domain.dao.ProductDao;
-import com.example.eureka_client.domain.entities.Product;
+import com.example.eureka_common.models.Product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +42,7 @@ public class ProductsController {
  
     @ResponseBody
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
-    public Product getById(@PathVariable Integer id) throws SQLException {
+    public Product get(@PathVariable Integer id) throws SQLException {
         return this.dao.get(id);
     }
 
