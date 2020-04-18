@@ -15,7 +15,7 @@
 	<description>Instance of Eureka Server</description>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>14</java.version>
 		<spring-cloud.version>Hoxton.SR3</spring-cloud.version>
 	</properties>
 
