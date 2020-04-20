@@ -5,7 +5,10 @@ import java.util.List;
 
 import com.example.eureka_client.domain.dao.ProductDao;
 import com.example.eureka_common.models.Product;
+import com.example.eureka_common.providers.ApplicationPropertiesProvider;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,76 +16,101 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
- 
+
 @RestController
 public class ProductsController {
     private ProductDao dao;
 
-    private final String INVALID_PRODUCT_MESSAGE = "Product is not valid! " + 
-        "Please, specify all fields. Numeric field should be equal or bigger than 0";
+    private final String INVALID_PRODUCT_MESSAGE = "Product is not valid! "
+            + "Please, specify all fields. Numeric field should be equal or bigger than 0";
 
-    private final String PRODUCT_NOT_FOUND_MESSAGE = "Item is not found";
+    private HttpHeaders httpHeadersWithInstanceId;
 
     @Autowired
-    public ProductsController(ProductDao dao) {
+    public ProductsController(ProductDao dao, ApplicationPropertiesProvider applicationPropertiesProvider) {
         this.dao = dao;
+        httpHeadersWithInstanceId = new HttpHeaders();
+        httpHeadersWithInstanceId.add("eureka.instance.instance-id", applicationPropertiesProvider.get("eureka.instance.instance-id"));
     }
- 
+
     @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home() {
-        return "<span>Hello from eureka_client</span>";
+    public ResponseEntity<String> home() {
+        return ResponseEntity.ok().headers(httpHeadersWithInstanceId).body("<span>Hello from eureka_client</span>");
     }
- 
+
     @ResponseBody
     @RequestMapping(value = "/products", method = RequestMethod.GET)
-    public List<Product> getAll() throws SQLException {
-        return this.dao.getAll();
+    public ResponseEntity<List<Product>> getAll() throws SQLException {
+        List<Product> products = this.dao.getAll();
+        return ResponseEntity.ok().headers(httpHeadersWithInstanceId).body(products);
     }
- 
+
     @ResponseBody
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
-    public Product get(@PathVariable Integer id) throws SQLException {
-        return this.dao.get(id);
+    public ResponseEntity<Product> get(@PathVariable Integer id) throws SQLException {
+        Product product = this.dao.get(id);
+        if (product != null) {
+            return ResponseEntity.ok()
+                .headers(httpHeadersWithInstanceId)
+                .body(product);
+        }
+        return ResponseEntity.notFound()
+            .headers(httpHeadersWithInstanceId)
+            .build();
     }
 
     @ResponseBody
     @RequestMapping(value = "/products", method = RequestMethod.POST)
-    public String add(@RequestBody Product product) throws SQLException {
+    public ResponseEntity<String> add(@RequestBody Product product) throws SQLException {
         if (!IsProductValid(product)) {
-            return INVALID_PRODUCT_MESSAGE;
+            return ResponseEntity.badRequest()
+                .headers(httpHeadersWithInstanceId)
+                .body(INVALID_PRODUCT_MESSAGE);
         }
-        
+
         Integer createdProductId = this.dao.add(product);
-        return String.format("Added successfully. Id - %d", createdProductId);
+        return ResponseEntity.ok()
+            .headers(httpHeadersWithInstanceId)
+            .body(String.format("Added successfully. Id - %d", createdProductId));
     }
 
     @ResponseBody
     @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
-    public String update(@PathVariable Integer id, @RequestBody Product product) throws SQLException {
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody Product product) throws SQLException {
         if (!IsProductValid(product)) {
-            return INVALID_PRODUCT_MESSAGE;
+            return ResponseEntity.badRequest()
+                .headers(httpHeadersWithInstanceId)
+                .body(INVALID_PRODUCT_MESSAGE);
         }
         
         Product stored = this.dao.get(id);
         if (stored == null) {
-            return PRODUCT_NOT_FOUND_MESSAGE;
+            return ResponseEntity.notFound()
+                .headers(httpHeadersWithInstanceId)
+                .build();
         }
 
         this.dao.update(id, product);
-        return "Updated successfully";
+        return ResponseEntity.ok()
+            .headers(httpHeadersWithInstanceId)
+            .body("Updated successfully");
     }
 
     @ResponseBody
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
-    public String delete(@PathVariable Integer id) throws SQLException {
+    public ResponseEntity<String> delete(@PathVariable Integer id) throws SQLException {
         Product stored = this.dao.get(id);
         if (stored == null) {
-            return PRODUCT_NOT_FOUND_MESSAGE;
+            return ResponseEntity.notFound()
+                .headers(httpHeadersWithInstanceId)
+                .build();
         }
 
         this.dao.delete(id);
-        return "Deleted sucessfully";
+        return ResponseEntity.ok()
+            .headers(httpHeadersWithInstanceId)
+            .body("Deleted sucessfully");
     }
 
     
