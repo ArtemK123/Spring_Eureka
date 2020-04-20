@@ -8,12 +8,15 @@ import com.example.eureka_common.models.Product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import feign.FeignException;
 
 @RestController
 public class ProductsGatewayController {
@@ -58,5 +61,12 @@ public class ProductsGatewayController {
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> delete(@PathVariable Integer id) throws SQLException {
         return this.productsFiegnClient.delete(id);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<String> handleFeignStatusException(FeignException feignException) {
+        return ResponseEntity
+            .status(feignException.status())
+            .body(feignException.contentUTF8());
     }
 }
