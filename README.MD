@@ -2,6 +2,16 @@ This is a sandbox project for testing microservice architecture.
 The Spring Eureka is used
 
 How to run:
-1. docker pull darkmode1012/eureka:eureka-client
-2. docker pull darkmode1012/eureka:eureka-server
-3. docker-compose up
+1. mvn clean install (in root folder) - it will build all packages in project
+2. Run postgres and setup database:
+	- create database called Megabit
+	- create user with name=MegabitUser and password=Megabit
+	- give MegabitUser privileges to use Megabit database
+3. Run eureka-server (will run on localhost:8761)
+4. Run eureka-client(may be multiple instances) (internal IP)
+5. Run eureka-api-gateway (localhost:8080)
+
+
+Exposed API:
+- eureka-server: localhost:8761
+- eureka-api-gateway: localhost8080
