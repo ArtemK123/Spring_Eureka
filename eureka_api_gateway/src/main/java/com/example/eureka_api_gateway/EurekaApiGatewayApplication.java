@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.example.eureka_api_gateway", "com.example.eureka_common"})
 @EnableFeignClients
 @EnableEurekaClient
 public class EurekaApiGatewayApplication {
