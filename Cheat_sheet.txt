@@ -11,10 +11,7 @@ mvn spring-boot:run - start spring app
 
 
 docker build -t darkmode1012/eureka:eureka-server .
-docker build -t darkmode1012/eureka:eureka-client .
-docker save --output eureka-server.tar eureka-server
-docker load --input eureka-server.tar
-docker run -p 8761:8761 eureka-server
+docker-compose up --scale eureka-client=2
 
 docker pull darkmode1012/eureka:eureka-client
 
