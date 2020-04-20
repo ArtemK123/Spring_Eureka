@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "eureka-client")
+@FeignClient(name = "${products.service.name}")
 public interface ProductsFiegnClient {
 
     @GetMapping("/")
