@@ -1,5 +1,6 @@
 FROM maven:3.6.3-jdk-14 AS build
 
+# Root folder (with docker-compose.yml) should be specified as context
 RUN mkdir /tmp/eureka_common
 COPY ./eureka_common/pom.xml /tmp/eureka_common
 COPY ./eureka_common/src /tmp/eureka_common/src
