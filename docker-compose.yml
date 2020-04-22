@@ -14,8 +14,8 @@ services:
     eureka-server:
         image: darkmode1012/eureka:eureka-server
         build:
-            context: eureka_server
-            dockerfile: Dockerfile
+            context: .
+            dockerfile: ./eureka_server/Dockerfile
         ports:
             - 8761:8761
         networks:
@@ -24,8 +24,8 @@ services:
     eureka-client:
         image: darkmode1012/eureka:eureka-client
         build:
-            context: eureka_client
-            dockerfile: Dockerfile
+            context: .
+            dockerfile: ./eureka_client/Dockerfile
         depends_on:
             - db
             - eureka-server
@@ -36,8 +36,8 @@ services:
     eureka-api-gateway:
         image: darkmode1012/eureka:eureka-api-gateway
         build:
-            context: eureka_api_gateway
-            dockerfile: Dockerfile
+            context: .
+            dockerfile: ./eureka_api_gateway/Dockerfile
         depends_on:
             - eureka-server
             - eureka-client

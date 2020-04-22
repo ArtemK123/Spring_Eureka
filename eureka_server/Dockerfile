@@ -1,6 +1,14 @@
+FROM maven:3.6.3-jdk-14 AS build
+
+COPY ./eureka_server/pom.xml /tmp/
+COPY ./eureka_server/src /tmp/src
+WORKDIR /tmp/
+RUN mvn -B package
+
 FROM openjdk:14-jdk
-COPY ./src/main/resources/* /eureka_server/
-COPY ./target/eureka-server-1.0.0.jar /eureka_server/
-WORKDIR /eureka_server/
+
+RUN mkdir /app
+COPY --from=build /tmp/target/*.jar /app/spring-boot-application.jar
+ENTRYPOINT ["java", "-jar", "/app/spring-boot-application.jar"]
+
 EXPOSE 8761
-ENTRYPOINT ["java", "-jar", "./eureka-server-1.0.0.jar"]
