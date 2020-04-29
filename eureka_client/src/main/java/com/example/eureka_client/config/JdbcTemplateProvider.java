@@ -5,11 +5,13 @@ import javax.sql.DataSource;
 import com.example.eureka_common.providers.ApplicationPropertiesProvider;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 
 @Component
+@RefreshScope
 public class JdbcTemplateProvider {
     private ApplicationPropertiesProvider applicationPropertiesProvider;
 
