@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.eureka_common.models.Product;
 
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+@RefreshScope
 @FeignClient(name = "${products.service.name}")
 public interface ProductsFiegnClient {
 

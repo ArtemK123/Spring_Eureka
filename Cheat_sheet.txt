@@ -3,18 +3,23 @@ mvn clean install - compile
 java -jar target/eureka-server-1.0.0.jar
 java -jar target/eureka-client-1.0.0.jar
 java -jar target/eureka-api-gateway-1.0.0.jar
+java -jar target/eureka-config-server-1.0.0.jar
 
 mvn dependency:resolve - download dependencies from pom.xml
 
 Or via spring mechanism:
 mvn spring-boot:run - start spring app
 
+Make POST request:
+curl -X POST http://localhost:8080/actuator/refresh
+curl -X POST http://localhost:8888/actuator/bus-refresh
 
 docker build -t darkmode1012/eureka:eureka-server .
 docker-compose up --scale eureka-client=2
 
 docker pull darkmode1012/eureka:eureka-client
 
+docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
 
 ***************************************
 
@@ -25,3 +30,5 @@ Eureka client: https://o7planning.org/ru/11737/understanding-spring-cloud-discov
 Create spring project online: https://start.spring.io/
 Yaml validation (for application.yml): http://www.yamllint.com/
 Docker: https://medium.com/@wkrzywiec/how-to-put-your-java-application-into-docker-container-5e0a02acdd6b
+Config server: https://o7planning.org/ru/11727/understanding-spring-cloud-config-client-with-example
+Bus refresh: https://cloud.spring.io/spring-cloud-bus/2.1.x/single/spring-cloud-bus.html
