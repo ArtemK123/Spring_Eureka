@@ -26,3 +26,4 @@ Eureka client: https://o7planning.org/ru/11737/understanding-spring-cloud-discov
 Create spring project online: https://start.spring.io/
 Yaml validation (for application.yml): http://www.yamllint.com/
 Docker: https://medium.com/@wkrzywiec/how-to-put-your-java-application-into-docker-container-5e0a02acdd6b
+Config server: https://o7planning.org/ru/11727/understanding-spring-cloud-config-client-with-example

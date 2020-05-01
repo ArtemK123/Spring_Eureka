@@ -10,8 +10,6 @@ import com.example.eureka_common.providers.ApplicationPropertiesProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RefreshScope
 public class ProductsController {
     private ProductDao dao;
 
@@ -28,9 +25,6 @@ public class ProductsController {
             + "Please, specify all fields. Numeric field should be equal or bigger than 0";
 
     private HttpHeaders httpHeadersWithInstanceId;
-
-    @Value("${some.other.property}") 
-    private String someOtherProperty;
 
     @Autowired
     public ProductsController(ProductDao dao, ApplicationPropertiesProvider applicationPropertiesProvider) {
@@ -42,8 +36,6 @@ public class ProductsController {
     @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<String> home() {
-        System.out.println(someOtherProperty);
-
         return ResponseEntity.ok().headers(httpHeadersWithInstanceId).body("<span>Hello from eureka_client</span>");
     }
 
