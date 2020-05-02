@@ -10,6 +10,14 @@ services:
             POSTGRES_PASSWORD: Megabit
         networks:
             - eureka-network
+            
+    rabbitmq:
+        image: "rabbitmq:3"
+        ports:
+            - 15672:15672
+            - 5672:5672
+        networks:
+            - eureka-network
 
     eureka-server:
         image: darkmode1012/eureka:eureka-server
@@ -18,6 +26,21 @@ services:
             dockerfile: ./docker/ServerDockerfile
         ports:
             - 8761:8761
+        restart: always
+        networks:
+            - eureka-network
+            
+    eureka-config-server:
+        image: darkmode1012/eureka:eureka-config-server
+        build:
+            context: .
+            dockerfile: ./docker/ConfigServerDockerfile
+        depends_on:
+            - eureka-server
+            - rabbitmq
+        ports:
+            - 8888:8888
+        restart: always
         networks:
             - eureka-network
 
@@ -29,6 +52,8 @@ services:
         depends_on:
             - db
             - eureka-server
+            - eureka-config-server
+            - rabbitmq
         restart: always
         networks:
             - eureka-network
@@ -41,6 +66,8 @@ services:
         depends_on:
             - eureka-server
             - eureka-client
+            - eureka-config-server
+            - rabbitmq
         ports:
             - 8080:8080
         restart: always
