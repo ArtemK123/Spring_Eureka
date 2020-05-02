@@ -12,7 +12,7 @@ mvn spring-boot:run - start spring app
 
 Make POST request:
 curl -X POST http://localhost:8080/actuator/refresh
-curl -X POST http://localhost:8888/actuator/bus-refresh
+curl -X POST http://localhost:8080/actuator/bus-refresh
 
 docker build -t darkmode1012/eureka:eureka-server .
 docker-compose up --scale eureka-client=2
@@ -20,6 +20,8 @@ docker-compose up --scale eureka-client=2
 docker pull darkmode1012/eureka:eureka-client
 
 docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+
+git clone -b docker https://github.com/ArtemK123/Spring_Eureka.git
 
 ***************************************
 
