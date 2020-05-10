@@ -1,15 +1,28 @@
 FROM maven:3.6.3-jdk-14 AS build
 
 # Root folder (with docker-compose.yml) should be specified as context
-COPY ./eureka_server/pom.xml /tmp/
-COPY ./eureka_server/src /tmp/src
-WORKDIR /tmp/
+RUN mkdir /tmp/eureka_common
+COPY ./eureka_common/pom.xml /tmp/eureka_common
+COPY ./eureka_common/src /tmp/eureka_common/src
+
+RUN mkdir /tmp/eureka_api_gateway
+COPY ./eureka_api_gateway/pom.xml /tmp/eureka_api_gateway
+COPY ./eureka_api_gateway/src /tmp/eureka_api_gateway/src
+
+WORKDIR /tmp/eureka_common
+RUN mvn -B install
+
+WORKDIR /tmp/eureka_api_gateway
 RUN mvn -B package
 
 FROM openjdk:14-jdk
 
 RUN mkdir /app
-COPY --from=build /tmp/target/*.jar /app/spring-boot-application.jar
-ENTRYPOINT ["java", "-jar", "/app/spring-boot-application.jar"]
+COPY --from=build /tmp/eureka_api_gateway/target/*.jar /app/spring-boot-application.jar
 
-EXPOSE 8761
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /app/wait-for-it.sh
+RUN chmod +x /app/wait-for-it.sh
+
+ENTRYPOINT ["java", "-jar", "./app/spring-boot-application.jar"]
+
+EXPOSE 8080
