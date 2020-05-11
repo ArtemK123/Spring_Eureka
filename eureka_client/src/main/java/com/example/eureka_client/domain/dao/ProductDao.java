@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import com.example.eureka_client.config.JdbcTemplateProvider;
-import com.example.eureka_client.domain.rowMappers.ProductRowMapper;
-import com.example.eureka_client.domain.tableCreators.ProductsTableCreator;
+import com.example.eureka_client.domain.config.JdbcTemplateProvider;
+import com.example.eureka_client.domain.row_mappers.ProductRowMapper;
+import com.example.eureka_client.domain.table_creators.ProductsTableCreator;
 import com.example.eureka_common.models.Product;
 
 @Component

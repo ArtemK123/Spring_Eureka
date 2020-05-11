@@ -1,4 +1,4 @@
-package com.example.eureka_client.domain.tableCreators;
+package com.example.eureka_client.domain.table_creators;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 

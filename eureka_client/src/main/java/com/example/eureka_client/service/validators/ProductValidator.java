@@ -1,6 +1,6 @@
-package com.example.eureka_client.validators;
+package com.example.eureka_client.service.validators;
 
-import com.example.eureka_client.exceptions.ValidationException;
+import com.example.eureka_client.service.exceptions.ValidationException;
 import com.example.eureka_common.models.Product;
 
 import org.springframework.stereotype.Component;

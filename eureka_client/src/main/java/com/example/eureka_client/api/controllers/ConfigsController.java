@@ -1,9 +1,9 @@
-package com.example.eureka_client.controllers;
+package com.example.eureka_client.api.controllers;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.eureka_client.config.CustomTestConfigs;
+import com.example.eureka_client.domain.config.CustomTestConfigs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.example.eureka_client.exceptions;
+package com.example.eureka_client.service.exceptions;
 
 public class ValidationException extends Exception {
 
