@@ -1,9 +1,10 @@
 package com.example.eureka_client.controllers;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.example.eureka_client.domain.dao.ProductDao;
+import com.example.eureka_client.exceptions.ValidationException;
+import com.example.eureka_client.validators.ProductValidator;
 import com.example.eureka_common.models.Product;
 import com.example.eureka_common.providers.ApplicationPropertiesProvider;
 
@@ -20,15 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ProductsController {
     private ProductDao dao;
-
-    private final String INVALID_PRODUCT_MESSAGE = "Product is not valid! "
-            + "Please, specify all fields. Numeric field should be equal or bigger than 0";
+    private ProductValidator productValidator;
 
     private HttpHeaders httpHeadersWithInstanceId;
 
     @Autowired
-    public ProductsController(ProductDao dao, ApplicationPropertiesProvider applicationPropertiesProvider) {
+    public ProductsController(
+            ProductDao dao,
+            ProductValidator productValidator,
+            ApplicationPropertiesProvider applicationPropertiesProvider) {
         this.dao = dao;
+        this.productValidator = productValidator;
         httpHeadersWithInstanceId = new HttpHeaders();
         httpHeadersWithInstanceId.add("eureka.instance.instance-id", applicationPropertiesProvider.get("eureka.instance.instance-id"));
     }
@@ -41,14 +44,14 @@ public class ProductsController {
 
     @ResponseBody
     @RequestMapping(value = "/products", method = RequestMethod.GET)
-    public ResponseEntity<List<Product>> getAll() throws SQLException {
+    public ResponseEntity<List<Product>> getAll() {
         List<Product> products = this.dao.getAll();
-        return ResponseEntity.ok().headers(httpHeadersWithInstanceId).body(products);
+            return ResponseEntity.ok().headers(httpHeadersWithInstanceId).body(products);
     }
 
     @ResponseBody
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Product> get(@PathVariable Integer id) throws SQLException {
+    public ResponseEntity<Product> get(@PathVariable Integer id) {
         Product product = this.dao.get(id);
         if (product != null) {
             return ResponseEntity.ok()
@@ -62,12 +65,8 @@ public class ProductsController {
 
     @ResponseBody
     @RequestMapping(value = "/products", method = RequestMethod.POST)
-    public ResponseEntity<String> add(@RequestBody Product product) throws SQLException {
-        if (!IsProductValid(product)) {
-            return ResponseEntity.badRequest()
-                .headers(httpHeadersWithInstanceId)
-                .body(INVALID_PRODUCT_MESSAGE);
-        }
+    public ResponseEntity<String> add(@RequestBody Product product) throws ValidationException {
+        productValidator.validate(product);
 
         Integer createdProductId = this.dao.add(product);
         return ResponseEntity.ok()
@@ -77,12 +76,8 @@ public class ProductsController {
 
     @ResponseBody
     @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody Product product) throws SQLException {
-        if (!IsProductValid(product)) {
-            return ResponseEntity.badRequest()
-                .headers(httpHeadersWithInstanceId)
-                .body(INVALID_PRODUCT_MESSAGE);
-        }
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody Product product) throws ValidationException {
+        productValidator.validate(product);
         
         Product stored = this.dao.get(id);
         if (stored == null) {
@@ -99,7 +94,7 @@ public class ProductsController {
 
     @ResponseBody
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> delete(@PathVariable Integer id) throws SQLException {
+    public ResponseEntity<String> delete(@PathVariable Integer id) {
         Product stored = this.dao.get(id);
         if (stored == null) {
             return ResponseEntity.notFound()
@@ -111,19 +106,5 @@ public class ProductsController {
         return ResponseEntity.ok()
             .headers(httpHeadersWithInstanceId)
             .body("Deleted sucessfully");
-    }
-
-    
-    private boolean IsProductValid(Product product) {
-        return !isNullOrEmpty(product.getName())
-            && product.getCount() != null && product.getCount() >= 0
-            && product.getPrice() != null && product.getPrice() >= 0.0
-            && !isNullOrEmpty(product.getLink())
-            && !isNullOrEmpty(product.getType())
-            && !isNullOrEmpty(product.getManufacturer());
-    }
-
-    private boolean isNullOrEmpty(String string) {
-        return string == null || string.trim().isEmpty();
     }
 }
