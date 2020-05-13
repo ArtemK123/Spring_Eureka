@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.resilience4j.retry.annotation.Retry;
+
 import feign.FeignException;
 
 @RestController
 public class ProductsGatewayController {
+    private static final String PRODUCTS_GATEWAY_CONTROLLER_NAME = "ProductsGatewayController";
+
     private ProductsFiegnClient productsFiegnClient;
 
     @Autowired
@@ -46,6 +50,7 @@ public class ProductsGatewayController {
     }
 
     @ResponseBody
+    @Retry(name = PRODUCTS_GATEWAY_CONTROLLER_NAME, fallbackMethod = "addFallback")
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public ResponseEntity<String> add(@RequestBody Product product) throws SQLException {
         return this.productsFiegnClient.add(product);
@@ -68,5 +73,10 @@ public class ProductsGatewayController {
         return ResponseEntity
             .status(feignException.status())
             .body(feignException.contentUTF8());
+    }
+
+    public ResponseEntity<String> addFallback(Product product, FeignException feignException) {
+        System.out.println("Feign exception");
+        return ResponseEntity.status(feignException.status()).build();
     }
 }
