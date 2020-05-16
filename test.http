@@ -1,5 +1,5 @@
 ### Create entity
-POST http://localhost:8080/products
+POST http://localhost:8000/products
 Content-type: application/json
 {
 	"name": "toDocker1",
@@ -11,7 +11,7 @@ Content-type: application/json
 }
 
 ### Update entity
-PUT http://localhost:8080/products/{entityId}
+PUT http://localhost:8000/products/{entityId}
 Content-type: application/json
 {
 	"name": "UpdatedProduct",
@@ -23,19 +23,10 @@ Content-type: application/json
 }
 
 ### Fetch entities
-GET http://localhost:8080/products
+GET http://localhost:8000/products
 
 ### Fetch entity
-GET http://localhost:8080/products/{entityId}
+GET http://localhost:8000/products{entityId}
 
 ### Delete entity
-DELETE http://localhost:8080/products/{entityId}
-
-### Update configs for Api-gateway only (or any eureka-client, but you should get internal ip address from eureka-server)
-POST http://localhost:8080/actuator/refresh
-
-### Update configs for api-gateway and all clients
-POST http://localhost:8080/actuator/bus-refresh
-
-### Get configs for Api-gateway (or any eureka-client, but you should get internal ip address from eureka-server)
-GET http://localhost:8080/configs
+DELETE http://localhost:8000/products/{entityId}

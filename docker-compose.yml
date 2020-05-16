@@ -1,0 +1,84 @@
+version: '3.7'
+services:
+    db:
+        image: postgres:11
+        networks:
+            - eureka-network
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_DB: Megabit
+            POSTGRES_USER: MegabitUser
+            POSTGRES_PASSWORD: Megabit
+            
+    rabbitmq:
+        image: "rabbitmq:3"
+        networks:
+            - eureka-network
+        ports:
+            - 15672:15672
+            - 5672:5672
+
+    eureka-server:
+        image: darkmode1012/eureka:eureka-server
+        build:
+            context: .
+            dockerfile: ./docker/ServerDockerfile
+        networks:
+            - eureka-network
+        ports:
+            - 8761:8761
+        restart: unless-stopped
+            
+    eureka-config-server:
+        image: darkmode1012/eureka:eureka-config-server
+        build:
+            context: .
+            dockerfile: ./docker/ConfigServerDockerfile
+        networks:
+            - eureka-network
+        depends_on:
+            - eureka-server
+            - rabbitmq
+        ports:
+            - 8888:8888
+        restart: unless-stopped
+        entrypoint: ["/app/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", 
+                    "/app/wait-for-it.sh", "eureka-server:8761", "-t", "60", "--",
+                    "java", "-jar", "/app/spring-boot-application.jar"]
+
+    eureka-client:
+        image: darkmode1012/eureka:eureka-client
+        build:
+            context: .
+            dockerfile: ./docker/ClientDockerfile
+        networks:
+            - eureka-network
+        depends_on:
+            - db
+            - eureka-server
+            - eureka-config-server
+            - rabbitmq
+        restart: unless-stopped
+        entrypoint: ["/app/wait-for-it.sh", "eureka-config-server:8888", "-t", "120", "--", "java", "-jar", "/app/spring-boot-application.jar"]
+
+    eureka-api-gateway:
+        image: darkmode1012/eureka:eureka-api-gateway
+        build:
+            context: .
+            dockerfile: ./docker/ApiGatewayDockerfile
+        networks:
+            - eureka-network
+        depends_on:
+            - eureka-server
+            - eureka-client
+            - eureka-config-server
+            - rabbitmq
+        ports:
+            - 8080:8080
+        restart: unless-stopped
+        entrypoint: ["/app/wait-for-it.sh", "eureka-config-server:8888", "-t", "120", "--", "java", "-jar", "/app/spring-boot-application.jar"]
+
+networks: 
+  eureka-network:
+    driver: bridge
