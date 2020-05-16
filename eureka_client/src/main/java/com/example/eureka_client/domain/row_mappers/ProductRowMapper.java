@@ -1,4 +1,4 @@
-package com.example.eureka_client.domain.rowMappers;
+package com.example.eureka_client.domain.row_mappers;
 
 import org.springframework.jdbc.core.RowMapper;
 

@@ -23,17 +23,17 @@ public interface ProductsFiegnClient {
     public ResponseEntity<String> home();
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getAll() throws SQLException;
+    public ResponseEntity<List<Product>> getAll();
 
     @GetMapping("/products/{id}")
-    public ResponseEntity<Product> get(@PathVariable Integer id) throws SQLException;
+    public ResponseEntity<Product> get(@PathVariable Integer id);
 
     @PostMapping("/products")
-    public ResponseEntity<String> add(@RequestBody Product product) throws SQLException;
+    public ResponseEntity<String> add(@RequestBody Product product);
 
     @PutMapping("/products/{id}")
-    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody Product product) throws SQLException;
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody Product product);
 
     @DeleteMapping("/products/{id}")
-    public ResponseEntity<String> delete(@PathVariable Integer id) throws SQLException;
+    public ResponseEntity<String> delete(@PathVariable Integer id);
 }

@@ -1,4 +1,4 @@
-package com.example.eureka_client.config;
+package com.example.eureka_client.domain.config;
 
 import javax.sql.DataSource;
 
