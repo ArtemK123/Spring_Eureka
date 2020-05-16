@@ -8,3 +8,4 @@ How to run (in root folder):
 Exposed API:
 - eureka-server: localhost:8761
 - eureka-api-gateway: localhost8080
+- grafana: localhost:3000
