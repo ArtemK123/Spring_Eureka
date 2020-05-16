@@ -3,8 +3,8 @@ package com.example.eureka_client.api.controllers;
 import java.util.List;
 
 import com.example.eureka_client.service.ProductService;
-import com.example.eureka_client.service.exceptions.NotFoundException;
-import com.example.eureka_client.service.exceptions.ValidationException;
+import com.example.eureka_common.exceptions.NotFoundException;
+import com.example.eureka_common.exceptions.ValidationException;
 import com.example.eureka_common.models.Product;
 import com.example.eureka_common.providers.ApplicationPropertiesProvider;
 

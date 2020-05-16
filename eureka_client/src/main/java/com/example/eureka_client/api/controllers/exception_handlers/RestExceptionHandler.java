@@ -2,8 +2,8 @@ package com.example.eureka_client.api.controllers.exception_handlers;
 
 import org.springframework.http.ResponseEntity;
 
-import com.example.eureka_client.service.exceptions.NotFoundException;
-import com.example.eureka_client.service.exceptions.ValidationException;
+import com.example.eureka_common.exceptions.NotFoundException;
+import com.example.eureka_common.exceptions.ValidationException;
 import com.example.eureka_common.providers.ApplicationPropertiesProvider;
 
 import org.slf4j.Logger;

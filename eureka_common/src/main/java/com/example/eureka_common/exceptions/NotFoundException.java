@@ -1,4 +1,4 @@
-package com.example.eureka_client.service.exceptions;
+package com.example.eureka_common.exceptions;
 
 public class NotFoundException extends Exception {
 

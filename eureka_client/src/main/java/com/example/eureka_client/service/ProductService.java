@@ -3,8 +3,8 @@ package com.example.eureka_client.service;
 import java.util.List;
 
 import com.example.eureka_client.domain.dao.ProductDao;
-import com.example.eureka_client.service.exceptions.NotFoundException;
-import com.example.eureka_client.service.exceptions.ValidationException;
+import com.example.eureka_common.exceptions.NotFoundException;
+import com.example.eureka_common.exceptions.ValidationException;
 import com.example.eureka_client.service.validators.ProductValidator;
 import com.example.eureka_common.models.Product;
 
