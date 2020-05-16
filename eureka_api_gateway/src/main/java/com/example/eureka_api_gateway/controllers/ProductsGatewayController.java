@@ -59,6 +59,7 @@ public class ProductsGatewayController {
     @Retry(name = PRODUCTS_GATEWAY_CONTROLLER_NAME, fallbackMethod = "addRetryFallback")
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public ResponseEntity<String> add(@RequestBody Product product) throws ValidationException {
+        System.out.println("add is called");
         return this.productsFiegnClientDecorator.add(product);
     }
 
