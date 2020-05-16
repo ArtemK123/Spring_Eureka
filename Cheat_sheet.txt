@@ -16,6 +16,7 @@ curl -X POST http://localhost:8080/actuator/bus-refresh
 
 docker build -t darkmode1012/eureka:eureka-server .
 docker-compose up --scale eureka-client=2
+docker-compose -f docker-compose-without-client.yml up
 
 docker pull darkmode1012/eureka:eureka-client
 docker exec -it spring_eureka_eureka-config-server_1 bash

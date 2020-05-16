@@ -18,6 +18,26 @@ services:
         ports:
             - 15672:15672
             - 5672:5672
+            
+    prometheus:
+        image: prom/prometheus
+        container_name: prometheus
+        volumes:
+            - ./docker/prometheus-desktop.yml:/etc/prometheus/prometheus.yml
+        ports:
+          - "9090:9090"
+        networks:
+          - eureka-network
+
+    grafana:
+        image: grafana/grafana
+        container_name: grafana
+        env_file:
+          - ./docker/grafana.env
+        ports:
+          - "3000:3000"
+        networks:
+          - eureka-network
 
     eureka-server:
         image: darkmode1012/eureka:eureka-server
