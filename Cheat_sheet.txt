@@ -4,6 +4,7 @@ java -jar target/eureka-server-1.0.0.jar
 java -jar target/eureka-client-1.0.0.jar
 java -jar target/eureka-api-gateway-1.0.0.jar
 java -jar target/eureka-config-server-1.0.0.jar
+java -jar target/eureka-kafka-consumer-1.0.0.jar
 
 mvn dependency:resolve - download dependencies from pom.xml
 
