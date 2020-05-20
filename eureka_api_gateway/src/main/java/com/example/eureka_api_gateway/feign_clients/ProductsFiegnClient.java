@@ -1,6 +1,5 @@
 package com.example.eureka_api_gateway.feign_clients;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.example.eureka_common.models.Product;

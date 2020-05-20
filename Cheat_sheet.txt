@@ -28,6 +28,7 @@ git clone -b docker https://github.com/ArtemK123/Spring_Eureka.git
 kafka:
 kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 3 --topic entity.update
 kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic entity.create
+kafka-console-producer.bat --broker-list localhost:9092 --topic entity.create
 
 ***************************************
 
