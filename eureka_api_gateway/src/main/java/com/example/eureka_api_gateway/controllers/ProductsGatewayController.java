@@ -9,6 +9,8 @@ import com.example.eureka_common.exceptions.ValidationException;
 import com.example.eureka_common.models.Product;
 import com.netflix.client.ClientException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,10 +31,12 @@ public class ProductsGatewayController {
     private static final String PRODUCTS_GATEWAY_CONTROLLER_NAME = "ProductsGatewayController";
 
     private ProductsFiegnClientDecorator productsFiegnClientDecorator;
+    private Logger logger;
 
     @Autowired
     public ProductsGatewayController(ProductsFiegnClientDecorator productsFiegnClientDecorator) {
         this.productsFiegnClientDecorator = productsFiegnClientDecorator;
+        logger = LoggerFactory.getLogger(ProductsGatewayController.class);
     }
 
     @ResponseBody
@@ -59,7 +63,6 @@ public class ProductsGatewayController {
     @Retry(name = PRODUCTS_GATEWAY_CONTROLLER_NAME, fallbackMethod = "addRetryFallback")
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public ResponseEntity<String> add(@RequestBody Product product) throws ValidationException {
-        System.out.println("add is called");
         return this.productsFiegnClientDecorator.add(product);
     }
 
@@ -77,49 +80,52 @@ public class ProductsGatewayController {
     }
 
     public ResponseEntity<List<Product>> getAllCircuitBreakerFallback(ClientException exception) { 
-        System.out.println("getAllCircuitBreakerFallback");
+        logger.info("The eureka-client is not accessable (getAllCircuitBreakerFallback)");
 
         return ResponseEntity.status(500).body(new ArrayList<Product>());
     }
 
     public ResponseEntity<Product> getCircuitBreakerFallback(Integer id, ClientException exception) { 
-        System.out.println("getCircuitBreakerFallback");
+        logger.info("The eureka-client is not accessable (getCircuitBreakerFallback)");
 
         return ResponseEntity.status(500).body(null);
     }
 
     public ResponseEntity<String> addRetryFallback(Product product, ValidationException exception) {
-        System.out.println("addFallback validation exception");
+        logger.info("The product is not valid (addFallback validation exception)");
 
         return ResponseEntity.status(400).body(exception.getMessage());
     }
 
     public ResponseEntity<String> addRetryFallback(Product product, RuntimeException exception) {
-        System.out.println("addFallback");
+        logger.info("Unhandled exception (addFallback)");
+        logger.error("addFallback", exception);
 
         return ResponseEntity.status(500).body(PRODUCTS_API_IS_NOT_AVAILABLE_MESSAGE);
     }
     
     public ResponseEntity<String> updateRetryFallback(Integer id, Product product, ValidationException exception) {
-        System.out.println("updateRetryFallback validation exception");
+        logger.info("The product is not valid (updateRetryFallback validation exception)");
 
         return ResponseEntity.status(400).body(exception.getMessage());
     }
 
     public ResponseEntity<String> updateRetryFallback(Integer id, Product product, NotFoundException exception) {
-        System.out.println("updateRetryFallback not found exception");
+        logger.info("The product is not found (updateRetryFallback not found exception)");
 
         return ResponseEntity.status(404).body(exception.getMessage());
     }
 
     public ResponseEntity<String> updateRetryFallback(Integer id, Product product, RuntimeException exception) {
-        System.out.println("updateRetryFallback");
+        logger.info("Unhandled exception (updateRetryFallback)");
+        logger.error("updateRetryFallback", exception);
 
         return ResponseEntity.status(500).body(PRODUCTS_API_IS_NOT_AVAILABLE_MESSAGE);
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(NotFoundException exception) {
+        System.out.println("Entity is not found (NotFoundExceptionHandler)");
         return ResponseEntity.status(404).body(exception.getMessage());
     }
 }
