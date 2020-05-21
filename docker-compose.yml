@@ -82,6 +82,20 @@ services:
         restart: unless-stopped
         entrypoint: ["/app/wait-for-it.sh", "eureka-config-server:8888", "-t", "120", "--", "java", "-jar", "/app/spring-boot-application.jar"]
 
+    eureka-kafka-consumer:
+        image: darkmode1012/eureka:eureka-kafka-consumer
+        build:
+            context: .
+            dockerfile: ./docker/KafkaConsumerDockerfile
+        networks:
+            - eureka-network
+        depends_on:
+            - eureka-server
+            - eureka-config-server
+            - rabbitmq
+        restart: unless-stopped
+        entrypoint: ["/app/wait-for-it.sh", "eureka-config-server:8888", "-t", "120", "--", "java", "-jar", "/app/spring-boot-application.jar"]
+
     eureka-api-gateway:
         image: darkmode1012/eureka:eureka-api-gateway
         build:
