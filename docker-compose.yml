@@ -21,7 +21,6 @@ services:
             
     prometheus:
         image: prom/prometheus
-        container_name: prometheus
         volumes:
             - ./docker/prometheus-desktop.yml:/etc/prometheus/prometheus.yml
         ports:
@@ -31,14 +30,36 @@ services:
 
     grafana:
         image: grafana/grafana
-        container_name: grafana
         env_file:
           - ./docker/grafana.env
         ports:
           - "3000:3000"
         networks:
           - eureka-network
-
+          
+    zookeeper:
+        image: wurstmeister/zookeeper
+        networks:
+            - eureka-network
+        
+    kafka:
+        image: wurstmeister/kafka
+        depends_on:
+            - zookeeper
+        ports:
+            - "9092:9092"
+        networks:
+            - eureka-network
+        environment:
+            KAFKA_BROKER_ID: 1
+            KAFKA_CREATE_TOPICS: entity.create:3:1, entity.update:3:1
+            KAFKA_LISTENERS: LISTENER_BOB://kafka:29092, LISTENER_FRED://kafka:9092
+            KAFKA_ADVERTISED_LISTENERS: LISTENER_BOB://kafka:29092, LISTENER_FRED://localhost:9092
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_BOB:PLAINTEXT,LISTENER_FRED:PLAINTEXT
+            KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_BOB
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+          
     eureka-server:
         image: darkmode1012/eureka:eureka-server
         build:
@@ -78,9 +99,12 @@ services:
             - db
             - eureka-server
             - eureka-config-server
+            - kafka
             - rabbitmq
         restart: unless-stopped
-        entrypoint: ["/app/wait-for-it.sh", "eureka-config-server:8888", "-t", "120", "--", "java", "-jar", "/app/spring-boot-application.jar"]
+        entrypoint: ["/app/wait-for-it.sh", "kafka:29092", "-t", "120", "--", 
+                    "/app/wait-for-it.sh", "eureka-config-server:8888", "-t", "120", "--",
+                    "java", "-jar", "/app/spring-boot-application.jar"]
 
     eureka-kafka-consumer:
         image: darkmode1012/eureka:eureka-kafka-consumer
@@ -93,8 +117,11 @@ services:
             - eureka-server
             - eureka-config-server
             - rabbitmq
+            - kafka
         restart: unless-stopped
-        entrypoint: ["/app/wait-for-it.sh", "eureka-config-server:8888", "-t", "120", "--", "java", "-jar", "/app/spring-boot-application.jar"]
+        entrypoint: ["/app/wait-for-it.sh", "kafka:29092", "-t", "120", "--", 
+                    "/app/wait-for-it.sh", "eureka-config-server:8888", "-t", "120", "--",
+                    "java", "-jar", "/app/spring-boot-application.jar"]
 
     eureka-api-gateway:
         image: darkmode1012/eureka:eureka-api-gateway
